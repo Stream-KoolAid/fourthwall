@@ -1,0 +1,17 @@
+.page__header {
+	position: sticky;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 111;
+	background: rgba(
+		255,
+		255,
+		255,
+		0.7
+	); /* Adjust transparency for better blur effect */
+	-webkit-backdrop-filter: saturate(180%) blur(12px);
+	backdrop-filter: saturate(180%) blur(12px);
+	border-bottom: 3px solid var(--color-background);
+	transition: background 0.3s ease-in-out; /* Smooth transition */
+}
