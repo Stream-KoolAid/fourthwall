@@ -4,13 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const currencySymbols = ['\u20AC', '$', '£', '₹', '¥', 'kr', 'zł', 'RM']; // Unicode for €
 
-	// Ensure the regex correctly detects zero values and avoids leaving trailing punctuation
+	// Ensure the regex correctly detects zero values and removes trailing punctuation
 	const zeroAmountRegex = new RegExp(
 		`(?:^|\\s)(${currencySymbols
 			.map((s) => `\\${s}`)
 			.join(
 				'|'
-			)})\\s?0[,.]00(?:\\b|\\s|$)|(?:^|\\s)0,00\\s?(kr|zł)(?:\\b|\\s|$)|(?:^|\\s)₹0[,.]00(?:\\b|\\s|$)|(?:^|\\s)¥\\s?0[,.]00(?:\\b|\\s|$)|(?:^|\\s)RM\\s?0[,.]00(?:\\b|\\s|$)|(?:^|\\s)¥\\s?0(?:\\b|\\s|$)`,
+			)})\\s?0[,.]00(?:[.,!?])?(?:\\b|\\s|$)|(?:^|\\s)0,00\\s?(kr|zł)(?:[.,!?])?(?:\\b|\\s|$)|(?:^|\\s)₹0[,.]00(?:[.,!?])?(?:\\b|\\s|$)|(?:^|\\s)¥\\s?0[,.]00(?:[.,!?])?(?:\\b|\\s|$)|(?:^|\\s)RM\\s?0[,.]00(?:[.,!?])?(?:\\b|\\s|$)|(?:^|\\s)¥\\s?0(?:[.,!?])?(?:\\b|\\s|$)`,
 		'g'
 	);
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		let text = node.textContent;
 
 		if (ENABLE_FREE_REPLACEMENT) {
-			text = text.replace(zeroAmountRegex, ' FREE'); // Adding a space before FREE to prevent punctuation issues
+			text = text.replace(zeroAmountRegex, 'FREE'); // No extra space needed
 		}
 
 		if (ENABLE_DECIMAL_CLEANUP) {
