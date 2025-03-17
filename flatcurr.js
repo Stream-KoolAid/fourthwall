@@ -1,20 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const ENABLE_FREE_REPLACEMENT = true; // Replace "€0.00" or similar with "FREE"
-	const ENABLE_DECIMAL_CLEANUP = true; // Remove ".00" or ",00" from numbers
+	const ENABLE_FREE_REPLACEMENT = true;
+	const ENABLE_DECIMAL_CLEANUP = true;
 
-	const currencySymbols = ['\u20AC', '$', '£', '₹', '¥', 'kr', 'zł', 'RM']; // Unicode for €
+	const currencyLocales = {
+		EUR: 'de-DE', // Germany (Euro)
+		USD: 'en-US', // US Dollar
+		GBP: 'en-GB', // British Pound
+		INR: 'en-IN', // Indian Rupee
+		JPY: 'ja-JP', // Japanese Yen
+		DKK: 'da-DK', // Danish Krone
+		PLN: 'pl-PL', // Polish Złoty
+		MYR: 'ms-MY', // Malaysian Ringgit
+	};
 
-	// Ensure the regex correctly detects zero values and avoids leaving trailing punctuation
-	const zeroAmountRegex = new RegExp(
-		`(?:^|\\s)(${currencySymbols
-			.map((s) => `\\${s}`)
-			.join(
-				'|'
-			)})\\s?0[,.]00(?:\\b|\\s|$)|(?:^|\\s)0,00\\s?(kr|zł)(?:\\b|\\s|$)|(?:^|\\s)₹0[,.]00(?:\\b|\\s|$)|(?:^|\\s)¥\\s?0[,.]00(?:\\b|\\s|$)|(?:^|\\s)RM\\s?0[,.]00(?:\\b|\\s|$)|(?:^|\\s)¥\\s?0(?:\\b|\\s|$)`,
-		'g'
-	);
-
-	const decimalCleanupRegex = /(\d+)[,.]00\b/g; // Ensure it only removes decimals when followed by word boundary
+	const formatCurrency = (value, currency) => {
+		const locale = currencyLocales[currency] || 'en-US';
+		return new Intl.NumberFormat(locale, {
+			style: 'currency',
+			currency: currency,
+			minimumFractionDigits: ENABLE_DECIMAL_CLEANUP ? 0 : 2,
+		}).format(value);
+	};
 
 	const walker = document.createTreeWalker(
 		document.body,
@@ -27,19 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
 		let node = walker.currentNode;
 		let text = node.textContent;
 
-		if (ENABLE_FREE_REPLACEMENT) {
-			text = text.replace(zeroAmountRegex, ' FREE'); // Adding a space before FREE to prevent punctuation issues
-		}
+		// Match currency patterns dynamically
+		text = text.replace(
+			/(\p{Sc})?\s?0[,.]00\s?(\p{Sc})?/gu,
+			(match, currencySymbol1, currencySymbol2) => {
+				return ENABLE_FREE_REPLACEMENT ? 'FREE' : match;
+			}
+		);
 
-		if (ENABLE_DECIMAL_CLEANUP) {
-			text = text.replace(decimalCleanupRegex, '$1');
-		}
+		// Remove unnecessary ".00" or ",00" for normal numbers
+		text = text.replace(/(\d+)[,.]00/g, '$1');
 
 		// Debugging: Log changes
 		if (node.textContent !== text) {
 			console.log('Modified:', node.textContent, '→', text);
 		}
 
-		node.textContent = text.trim(); // Trim spaces at the end to ensure no extra space is left
+		node.textContent = text;
 	}
 });
