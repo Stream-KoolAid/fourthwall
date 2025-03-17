@@ -4,14 +4,9 @@
 	left: 0;
 	width: 100%;
 	z-index: 111;
-	background: rgba(
-		255,
-		255,
-		255,
-		0.7
-	); /* Adjust transparency for better blur effect */
-	-webkit-backdrop-filter: saturate(180%) blur(12px);
-	backdrop-filter: saturate(180%) blur(12px);
+	background: rgba(255, 255, 255, 0.3); /* Must be semi-transparent */
+	-webkit-backdrop-filter: blur(12px) saturate(150%);
+	backdrop-filter: blur(12px) saturate(150%);
 	border-bottom: 3px solid var(--color-background);
-	transition: background 0.3s ease-in-out; /* Smooth transition */
+	transition: background 0.3s ease-in-out;
 }
