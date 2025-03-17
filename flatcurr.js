@@ -1,21 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const currencyRegex =
-		/([â‚¬$Â£â‚¹Â¥]|kr|zÅ‚|RM)\s?0[,.]00|0[,.]00\s?(kr|zÅ‚)|â‚¹0[,.]00|Â¥\s?0[,.]00|RM\s?0[,.]00|Â¥\s?0/gi;
-	const cleanCentsRegex = /(\d+)[,.]00/g;
+	const ENABLE_FREE_REPLACEMENT = true; // Replace "€0.00" or similar with "FREE"
+	const ENABLE_DECIMAL_CLEANUP = true; // Remove ".00" or ",00" from numbers
 
-	const replaceCurrencyInText = (text) => {
-		return text.replace(currencyRegex, 'FREE').replace(cleanCentsRegex, '$1');
-	};
+	const currencySymbols = ['\u20AC', '$', '£', '₹', '¥', 'kr', 'zł', 'RM']; // Using Unicode for €
 
-	const processTextNodes = (element) => {
-		Array.from(element.childNodes).forEach((node) => {
-			if (node.nodeType === Node.TEXT_NODE) {
-				node.textContent = replaceCurrencyInText(node.textContent);
-			} else if (node.nodeType === Node.ELEMENT_NODE) {
-				processTextNodes(node);
-			}
-		});
-	};
+	const zeroAmountRegex = new RegExp(
+		`(${currencySymbols
+			.map((s) => `\\${s}`)
+			.join(
+				'|'
+			)})\\s?0[,.]00|0,00\\s?(kr|zł)|₹0[,.]00|¥\\s?0[,.]00|RM\\s?0[,.]00|¥\\s?0`,
+		'g'
+	);
+	const decimalCleanupRegex = /(\d+)[,.]00/g;
 
-	processTextNodes(document.body);
+	const walker = document.createTreeWalker(
+		document.body,
+		NodeFilter.SHOW_TEXT,
+		null,
+		false
+	);
+
+	while (walker.nextNode()) {
+		let node = walker.currentNode;
+		let text = node.textContent;
+
+		if (ENABLE_FREE_REPLACEMENT) {
+			text = text.replace(zeroAmountRegex, 'FREE');
+		}
+
+		if (ENABLE_DECIMAL_CLEANUP) {
+			text = text.replace(decimalCleanupRegex, '$1');
+		}
+
+		// Debugging: Log changes
+		if (node.textContent !== text) {
+			console.log('Modified:', node.textContent, '→', text);
+		}
+
+		node.textContent = text;
+	}
 });
