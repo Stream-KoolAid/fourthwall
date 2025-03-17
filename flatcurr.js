@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const ENABLE_FREE_REPLACEMENT = true; // Replace "€0.00" or similar with "FREE!"
+	const ENABLE_FREE_REPLACEMENT = true; // Replace "€0.00" or similar with "FREE"
 	const ENABLE_DECIMAL_CLEANUP = true; // Remove ".00" or ",00" from numbers
 
 	const currencySymbols = ['\u20AC', '$', '£', '₹', '¥', 'kr', 'zł', 'RM']; // Unicode for €
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		let text = node.textContent;
 
 		if (ENABLE_FREE_REPLACEMENT) {
-			text = text.replace(zeroAmountRegex, 'FREE!'); // Ensure "FREE!" instead of just "FREE"
+			text = text.replace(zeroAmountRegex, 'FREE'); // No extra space needed
 		}
 
 		if (ENABLE_DECIMAL_CLEANUP) {
