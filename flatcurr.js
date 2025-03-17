@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const ENABLE_FREE_REPLACEMENT = true; // Toggle replacing zero prices with "FREE"
-	const ENABLE_DECIMAL_CLEANUP = true; // Toggle removing unnecessary ".00" or ",00"
+	const ENABLE_FREE_REPLACEMENT = true; // Replace "€0.00" or similar with "FREE"
+	const ENABLE_DECIMAL_CLEANUP = true; // Remove ".00" or ",00" from numbers
 
-	const currencySymbols = ['€', '$', '£', '₹', '¥', 'kr', 'zł', 'RM'];
+	const currencySymbols = ['\u20AC', '$', '£', '₹', '¥', 'kr', 'zł', 'RM']; // Using Unicode for €
+
 	const zeroAmountRegex = new RegExp(
 		`(${currencySymbols
 			.map((s) => `\\${s}`)
@@ -30,6 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		if (ENABLE_DECIMAL_CLEANUP) {
 			text = text.replace(decimalCleanupRegex, '$1');
+		}
+
+		// Debugging: Log changes
+		if (node.textContent !== text) {
+			console.log('Modified:', node.textContent, '→', text);
 		}
 
 		node.textContent = text;
