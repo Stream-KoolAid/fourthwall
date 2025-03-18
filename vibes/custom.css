@@ -1,0 +1,21 @@
+/* Sticky header */
+.page__header {
+	position: sticky;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 111;
+	border-bottom: solid 1px var(--color-background);
+}
+.header {
+	-webkit-backdrop-filter: saturate(150%) blur(12px);
+	backdrop-filter: saturate(150%) blur(12px);
+}
+.drawer__content {
+	height: 100vh;
+}
+
+/* Center Pricing text*/
+.tile__description {
+	text-align: center !important;
+}
