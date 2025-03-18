@@ -14,3 +14,8 @@
 .drawer__content {
 	height: 100vh;
 }
+
+/* Center Pricing text*/
+.tile__description {
+	text-align: center;
+}
