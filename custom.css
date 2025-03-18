@@ -17,5 +17,5 @@
 
 /* Center Pricing text*/
 .tile__description {
-	text-align: center;
+	text-align: center !important;
 }
