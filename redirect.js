@@ -19,7 +19,7 @@ function checkProductInfoAndUpdateCTA() {
                         <div class="hero__cta-container hero__cta-container--center">
                             <div class="hero__cta hero__cta--primary">
                                 <a href="https://stream-koolaid.github.io/Clock-Widget/" class="button button--primary button--expand">
-                                    Download Now
+                                    Visit Cusomizer
                                 </a>
                             </div>
                         </div>
