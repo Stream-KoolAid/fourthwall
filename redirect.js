@@ -32,7 +32,7 @@ function checkProductInfoAndUpdateCTA() {
 					ctaElement.innerHTML = `
                             <div class="hero__cta-container hero__cta-container--center">
                                 <div class="hero__cta hero__cta--primary">
-                                    <a href="https://stream-koolaid.github.io/Clock-Widget/" class="button button--primary button--expand">
+                                    <a href="https://stream-koolaid.github.io/Uptime-Widget/" class="button button--primary button--expand">
                                         Download Now
                                     </a>
                                 </div>
