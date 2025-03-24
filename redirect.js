@@ -25,6 +25,9 @@ function checkProductInfoAndUpdateCTA() {
                         </div>
                     `;
 				}
+				if (moreinfoElement) {
+					moreinfoElement.style.display = 'none';
+				}
 				break;
 
 			case moreinfoText.includes('UPTIMEWIDGET'):
@@ -38,6 +41,9 @@ function checkProductInfoAndUpdateCTA() {
                                 </div>
                             </div>
                         `;
+				}
+				if (moreinfoElement) {
+					moreinfoElement.style.display = 'none';
 				}
 				break;
 
