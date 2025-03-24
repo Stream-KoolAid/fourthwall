@@ -43,15 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		node.textContent = text.trim(); // Trim spaces at the end to ensure no extra space is left
 	}
 
-	// Hide currency spans for FREE products
+	// Handle FREE products and currency display
 	const priceElements = document.querySelectorAll('[data-product="price"]');
 	priceElements.forEach((element) => {
-		if (element.textContent.trim() === 'FREE') {
-			// Find and hide the currency span
-			const currencySpan = element.querySelector('span');
-			if (currencySpan) {
-				currencySpan.style.display = 'none';
-			}
+		const priceText = element.textContent.trim();
+		if (priceText.includes('FREE')) {
+			// Remove any periods after FREE
+			element.textContent = 'FREE';
+
+			// Find and remove all nested currency spans
+			const currencySpans = element.querySelectorAll('span');
+			currencySpans.forEach((span) => {
+				span.remove();
+			});
 		}
 	});
 });
