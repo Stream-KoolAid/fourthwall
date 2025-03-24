@@ -42,4 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		node.textContent = text.trim(); // Trim spaces at the end to ensure no extra space is left
 	}
+
+	// Hide currency spans for FREE products
+	const priceElements = document.querySelectorAll('[data-product="price"]');
+	priceElements.forEach((element) => {
+		if (element.textContent.trim() === 'FREE') {
+			// Find and hide the currency span
+			const currencySpan = element.querySelector('span');
+			if (currencySpan) {
+				currencySpan.style.display = 'none';
+			}
+		}
+	});
 });
